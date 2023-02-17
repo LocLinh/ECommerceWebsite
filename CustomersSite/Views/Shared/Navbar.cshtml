@@ -1,0 +1,129 @@
+﻿@using System.IdentityModel.Tokens.Jwt
+@using System.Security.Claims
+@{
+    var token = Context.Request.Cookies["JwtToken"];
+    var userName = "";
+    if (token != null)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var userInfo = tokenHandler.ReadJwtToken(token);
+        userName = userInfo.Claims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value;
+    }
+}
+<link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CustomersView</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuNam"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Nam
+                        </a>
+                        <ul class="dropdown-menu animate slideIn" aria-labelledby="dropdownMenuNam">
+                            <li><a class="dropdown-item" href="/?Category=1">Áo thun nam</a></li>
+                            <li><a class="dropdown-item" href="/?Category=2">Áo sơ mi nam</a></li>
+                            <li><a class="dropdown-item" href="/?Category=3">Áo khoác nam</a></li>
+                            <li><a class="dropdown-item" href="/?Category=4">Quần jean nam</a></li>
+                            <li><a class="dropdown-item" href="/?Category=5">Quần kaki nam</a></li>
+                            <li><a class="dropdown-item" href="/?Category=6">Quần vải nam</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuNu"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Nữ
+                        </a>
+
+                        <ul class="dropdown-menu animate slideIn" aria-labelledby="dropdownMenuNu">
+                            <li><a class="dropdown-item" href="/?Category=7">Áo thun nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=8">Áo sơ mi nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=9">Áo khoác nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=10">Quần jean nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=11">Quần kaki nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=13">Quần vải nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=14">Đầm nữ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=15">Chân váy</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuPhuKien"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Phụ kiện
+                        </a>
+
+                        <ul class="dropdown-menu animate slideIn" aria-labelledby="dropdownMenuPhuKien">
+                            <li><a class="dropdown-item" href="/?Category=16">Mũ/Nón</a></li>
+                            <li><a class="dropdown-item" href="/?Category=17">Túi/Balo</a></li>
+                            <li><a class="dropdown-item" href="/?Category=18">Thắt lưng</a></li>
+                            <li><a class="dropdown-item" href="/?Category=19">Vớ</a></li>
+                            <li><a class="dropdown-item" href="/?Category=20">Ví</a></li>
+                            <li><a class="dropdown-item" href="/?Category=21">Giày dép</a></li>
+                            <li><a class="dropdown-item" href="/?Category=22">Đồng hồ</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="mr-auto">
+            <ul class="navbar-nav flex-grow-1">
+                <li>
+                    <div class="input-group nav-link search-box">
+                        <input type="text" placeholder="Tên sản phẩm ..." class="input-search" />
+                        <span class="search-btn">
+                            <i class="fa-solid fa-magnifying-glass "></i>
+                        </span>
+                    </div>
+                </li>
+                <li>
+                    <a class="nav-link text-dark pe-3 text-sm-end text-md-end" href="/cart">
+                        <i class="fa-solid fa-cart-shopping position-relative">
+                            <span id="cart-items-counter"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                value=0>
+                                0
+                                <span class="visually-hidden">items in cart</span>
+                            </span>
+                        </i>
+                    </a>
+                </li>
+                @if (string.IsNullOrEmpty(userName)){
+                    <li>
+                        <a class="nav-link text-dark text-sm-end" asp-controller="Account" asp-action="Login"> Đăng nhập</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark text-sm-end" asp-controller="Account" asp-action="Register"> Đăng ký</a>
+                    </li>
+                }
+                else{
+                    <li>
+                        <div class="dropdown">
+                            <a class="nav-link text-dark text-sm-end dropdown-toggle" href="#" role="button" id="user"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                                @userName
+                            </a>
+                            <ul class="dropdown-menu animate slideIn" aria-labelledby="user">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script src="~/js/navbar.js"></script>

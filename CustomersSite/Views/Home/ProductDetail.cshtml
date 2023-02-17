@@ -1,0 +1,42 @@
+﻿@model Solution.Data.Models.ProductModels.LiteProductDto
+@{
+	var token = Context.Request.Cookies["JwtToken"];
+	ViewData["Title"] = "product detail";
+}
+
+<link href="~/css/productdetail.css" rel="stylesheet" asp-append-version="true" />
+<div class="card bg-transparent border-0">
+	<div class="container-fluid">
+		<div class="wrapper row">
+			<div class="preview col-md-6">
+				<div class="preview-pic tab-content">
+					<div class="" id="">
+						@if (string.IsNullOrEmpty(Model.ImagePath)){
+						<img
+							src="https://www.citizenwatch.com/dw/image/v2/BBQB_PRD/on/demandware.static/-/Sites-citizen_US-Library/default/dw474767b5/homepage-images/hero-images/home-half-hero-mickey-baseball.jpg" alt="placeholder image" />
+						} else {	
+						<img src="@Model.ImagePath"  />		
+						}
+					</div>
+				</div>
+			</div>
+			<div class="details col-md-6">
+				<h3 class="product-title">@Model.Name</h3>
+				<p class="product-description">@Model.Description</p>
+				<h4 class="price"><span>@String.Format("{0:N0} VNĐ", Model.Price)</span></h4>
+				<div class="action">
+					<button class="add-to-cart btn btn-default" type="button" onclick="addItem(@Model.Id)">
+						thêm vào giỏ hàng
+					</button>
+				</div>
+				<hr />
+
+			</div>
+		</div>
+		<div class="row">
+		</div>
+	</div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/productdetail.js"></script>
